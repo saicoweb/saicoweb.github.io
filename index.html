@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohamed Ahmed — Full-Stack Developer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Cairo:wght@400;500;600;700;800&family=Aref+Ruqaa:wght@400;700&display=swap');
+
+  :root{
+    --bg:#0d0f12;
+    --panel:#14171c;
+    --panel-2:#191c22;
+    --text:#e6e6e3;
+    --muted:#7c8089;
+    --border:#23262d;
+    --kw:#7aa2f7;      /* keyword blue-violet */
+    --str:#e0af68;     /* string amber */
+    --fn:#73daca;      /* function teal */
+    --tag:#bb9af7;     /* tag purple */
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Cairo','Inter',sans-serif;
+    line-height:1.7;
+  }
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'JetBrains Mono','Cairo',monospace;}
+  .ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;}
+  .serif-accent{
+    font-family:'Aref Ruqaa','Instrument Serif', serif;
+    font-weight:700;
+  }
+
+  ::selection{background:var(--kw);color:var(--bg);}
+
+  /* ===================== TAB BAR NAV (signature) ===================== */
+  .tabbar{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;
+    background:var(--panel);
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+    padding:0 14px;
+  }
+  .tab{
+    display:flex;align-items:center;gap:8px;
+    padding:13px 18px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.78rem;color:var(--muted);
+    border-left:1px solid var(--border);
+    white-space:nowrap;
+    cursor:pointer;
+    transition:color .2s ease, background .2s ease;
+  }
+  .tab:hover{color:var(--text);background:var(--panel-2);}
+  .tab.active{color:var(--text);background:var(--bg);border-bottom:2px solid var(--kw);}
+  .tab .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+  .tab-html .dot{background:var(--str);}
+  .tab-about .dot{background:var(--kw);}
+  .tab-skills .dot{background:var(--fn);}
+  .tab-projects .dot{background:var(--tag);}
+  .tab-log .dot{background:var(--str);}
+  .tab-contact .dot{background:var(--fn);}
+
+  main{padding-top:46px;}
+
+  /* ===================== CODE-LINE SECTION SCAFFOLD ===================== */
+  .code-section{
+    position:relative;
+    padding:90px 0 90px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .code-inner{
+    max-width:920px;margin:0 auto;padding:0 6vw;
+  }
+  .line-decl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.92rem;
+    color:var(--muted);
+    margin-bottom:36px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .line-decl .k{color:var(--kw);}
+  .line-decl .f{color:var(--fn);}
+  .line-decl .b{color:var(--muted);}
+
+  /* ===================== HERO ===================== */
+  .hero{
+    min-height:92vh;display:flex;flex-direction:column;justify-content:center;
+    padding:70px 6vw 40px;position:relative;
+  }
+  .hero-flag{
+    font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--fn);
+    display:flex;align-items:center;gap:10px;margin-bottom:26px;
+  }
+  .hero-flag::before{
+    content:"";width:8px;height:8px;border-radius:50%;background:var(--fn);
+    box-shadow:0 0 12px var(--fn);
+  }
+  .hero h1{
+    font-family:'Cairo','Space Grotesk',sans-serif;font-weight:800;
+    font-size:clamp(2.4rem,6.4vw,4.6rem);
+    line-height:1.15;letter-spacing:-0.01em;
+    max-width:16ch;margin-bottom:24px;
+  }
+  .hero h1 .kw{color:var(--kw);font-family:'Aref Ruqaa','Instrument Serif',serif;font-weight:700;}
+  .hero h1 .str{color:var(--str);font-family:'Aref Ruqaa','Instrument Serif',serif;font-weight:700;}
+  .hero-sub{
+    font-size:1.12rem;color:var(--muted);max-width:56ch;margin-bottom:42px;
+  }
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px;}
+  .btn{
+    padding:14px 26px;border-radius:8px;font-weight:600;font-size:0.95rem;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn-primary{background:var(--kw);color:var(--bg);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(122,162,247,0.28);}
+  .btn-ghost{border:1px solid var(--border);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--fn);background:var(--panel);}
+
+  .hero-terminal{
+    background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    max-width:640px;overflow:hidden;
+  }
+  .term-head{
+    display:flex;align-items:center;gap:8px;padding:10px 14px;
+    border-bottom:1px solid var(--border);
+  }
+  .term-dot{width:10px;height:10px;border-radius:50%;}
+  .term-dot:nth-child(1){background:#f7768e;}
+  .term-dot:nth-child(2){background:#e0af68;}
+  .term-dot:nth-child(3){background:#9ece6a;}
+  .term-title{
+    font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);
+    margin-right:auto;
+  }
+  .term-body{
+    padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;
+  }
+  .term-body .line{margin-bottom:6px;color:var(--muted);}
+  .term-body .prompt{color:var(--fn);}
+  .term-body .val{color:var(--str);}
+  .term-body .key{color:var(--kw);}
+  .cursor{
+    display:inline-block;width:7px;height:15px;background:var(--fn);
+    animation:blink 1s step-end infinite;vertical-align:middle;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  /* ===================== ABOUT ===================== */
+  .about-grid{
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:start;
+  }
+  @media(max-width:760px){.about-grid{grid-template-columns:1fr;}}
+  h2{
+    font-family:'Cairo','Space Grotesk',sans-serif;font-weight:700;
+    font-size:clamp(1.8rem,3.6vw,2.5rem);margin-bottom:22px;letter-spacing:-0.01em;
+  }
+  .about-body p{color:#c7c7c2;margin-bottom:20px;}
+  .about-facts{
+    display:flex;flex-direction:column;gap:0;
+    border-top:1px solid var(--border);
+  }
+  .fact{
+    display:flex;justify-content:space-between;padding:16px 0;
+    border-bottom:1px solid var(--border);
+    font-size:0.92rem;
+  }
+  .fact .k{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:0.8rem;}
+  .fact .v{font-weight:600;}
+
+  /* ===================== SKILLS ===================== */
+  .skills-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;
+  }
+  .skill-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:22px 22px 20px;
+  }
+  .skill-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
+  .skill-name{font-weight:600;font-size:1rem;}
+  .skill-pct{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--muted);}
+  .skill-bar{height:6px;border-radius:4px;background:var(--border);overflow:hidden;}
+  .skill-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--kw),var(--fn));width:0%;transition:width 1.2s ease;}
+
+  /* ===================== PROJECTS ===================== */
+  .project-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;
+  }
+  .project-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    overflow:hidden;display:flex;flex-direction:column;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .project-card:hover{border-color:var(--kw);transform:translateY(-4px);}
+  .project-thumb{
+    height:150px;position:relative;overflow:hidden;
+  }
+  .thumb-1{background:linear-gradient(135deg,#1b2a4a,#7aa2f7);}
+  .thumb-2{background:linear-gradient(135deg,#2a3b2a,#73daca);}
+  .thumb-3{background:linear-gradient(135deg,#3a2a44,#bb9af7);}
+  .thumb-4{background:linear-gradient(135deg,#443423,#e0af68);}
+  .project-thumb::after{
+    content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(45deg, rgba(0,0,0,0.15) 0 2px, transparent 2px 14px);
+  }
+  .project-body{padding:20px 22px 22px;flex:1;display:flex;flex-direction:column;}
+  .project-body h3{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:600;margin-bottom:8px;}
+  .project-body p{color:var(--muted);font-size:0.92rem;margin-bottom:16px;flex:1;}
+  .tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+  .tag{
+    font-family:'JetBrains Mono',monospace;font-size:0.68rem;
+    padding:3px 9px;border-radius:5px;border:1px solid var(--border);color:var(--muted);
+  }
+  .project-links{display:flex;gap:16px;font-size:0.85rem;}
+  .project-links a{color:var(--fn);font-weight:600;}
+  .project-links a:hover{text-decoration:underline;}
+
+  /* ===================== EXPERIENCE / COMMIT LOG ===================== */
+  .commit-log{border-top:1px solid var(--border);}
+  .commit{
+    display:grid;grid-template-columns:100px 1fr auto;gap:18px;align-items:baseline;
+    padding:20px 0;border-bottom:1px solid var(--border);
+  }
+  @media(max-width:600px){.commit{grid-template-columns:1fr;gap:6px;}}
+  .commit-hash{font-family:'JetBrains Mono',monospace;color:var(--str);font-size:0.82rem;}
+  .commit-msg strong{display:block;margin-bottom:4px;}
+  .commit-msg span{color:var(--muted);font-size:0.9rem;}
+  .commit-date{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:0.76rem;}
+
+  /* ===================== TESTIMONIALS / CODE REVIEW ===================== */
+  .review-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;
+  }
+  .review{
+    background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:22px;
+  }
+  .review-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .avatar{
+    width:38px;height:38px;border-radius:8px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--kw),var(--fn));
+  }
+  .reviewer{font-weight:600;font-size:0.92rem;}
+  .reviewer small{display:block;color:var(--muted);font-weight:400;font-size:0.78rem;}
+  .review p{color:#c7c7c2;font-size:1.1rem;font-family:'Aref Ruqaa','Instrument Serif',serif;line-height:1.6;}
+  .review .stamp{
+    margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--fn);
+  }
+
+  /* ===================== CONTACT ===================== */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;}
+  @media(max-width:760px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-info p{color:var(--muted);margin-bottom:28px;max-width:44ch;}
+  .contact-links{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--border);}
+  .contact-links a{
+    display:flex;justify-content:space-between;padding:16px 4px;
+    border-bottom:1px solid var(--border);font-size:0.95rem;
+    transition:color .2s ease;
+  }
+  .contact-links a:hover{color:var(--fn);}
+  .contact-links a span.mono{color:var(--muted);font-size:0.78rem;}
+
+  form{display:flex;flex-direction:column;gap:14px;}
+  label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:-6px;}
+  input, textarea{
+    background:var(--panel);border:1px solid var(--border);border-radius:8px;
+    padding:13px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.95rem;
+    outline:none;transition:border-color .2s ease;
+    width:100%;
+  }
+  input:focus, textarea:focus{border-color:var(--kw);}
+  textarea{resize:vertical;min-height:110px;}
+  .submit-row{display:flex;align-items:center;gap:14px;margin-top:6px;}
+  button.submit{
+    background:var(--kw);color:var(--bg);border:none;
+    padding:14px 28px;border-radius:8px;font-weight:700;font-size:0.95rem;
+    cursor:pointer;transition:transform .2s ease;
+  }
+  button.submit:hover{transform:translateY(-2px);}
+  .submit-note{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);}
+
+  footer{
+    padding:34px 6vw;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);
+  }
+
+  /* section reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="tabbar mono">
+  <a href="#hero" class="tab tab-html active"><span class="dot"></span>index.html</a>
+  <a href="#about" class="tab tab-about"><span class="dot"></span>about.js</a>
+  <a href="#skills" class="tab tab-skills"><span class="dot"></span>skills.json</a>
+  <a href="#projects" class="tab tab-projects"><span class="dot"></span>projects.tsx</a>
+  <a href="#log" class="tab tab-log"><span class="dot"></span>commits.log</a>
+  <a href="#contact" class="tab tab-contact"><span class="dot"></span>contact.js</a>
+</div>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="hero">
+    <div class="hero-flag">available for freelance &amp; full-time roles</div>
+    <h1>مبني حلول ويب <span class="kw">سريعة</span>، <span class="str">نضيفة</span>، وقابلة للتطوير.</h1>
+    <p class="hero-sub">
+      اسمي محمد أحمد، مطور Full-Stack متخصص في بناء تطبيقات ويب من الفكرة لحد النشر —
+      من الواجهة الأمامية لحد الـ API والداتابيز.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-primary">شوف المشاريع</a>
+      <a href="#contact" class="btn btn-ghost">تواصل معايا</a>
+    </div>
+
+    <div class="hero-terminal">
+      <div class="term-head">
+        <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+        <span class="term-title">~/mohamed-ahmed — zsh</span>
+      </div>
+      <div class="term-body">
+        <div class="line"><span class="prompt">$</span> whoami</div>
+        <div class="line"><span class="key">name</span>: <span class="val">"Mohamed Ahmed"</span></div>
+        <div class="line"><span class="key">role</span>: <span class="val">"Full-Stack Developer"</span></div>
+        <div class="line"><span class="key">stack</span>: <span class="val">["React", "Node.js", "PostgreSQL"]</span></div>
+        <div class="line"><span class="key">status</span>: <span class="val">"open_to_work"</span><span class="cursor"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="code-section" id="about">
+    <div class="code-inner reveal">
+      <div class="line-decl"><span class="k">function</span> <span class="f">about</span><span class="b">() {</span></div>
+      <h2>مين أنا</h2>
+      <div class="about-grid">
+        <div class="about-body">
+          <p>
+            بشتغل في تطوير الويب من سنين، وبركز على إني أبني منتجات مش بس شغالة، لكن سريعة ومريحة للمستخدم
+            وسهلة الصيانة للفريق اللي هيكمل عليها بعدي.
+          </p>
+          <p>
+            شغال غالبًا بـ React و Node.js، وبستخدم TypeScript في أي مشروع فيه فريق أكتر من شخص.
+            بحب المشاريع اللي فيها تحدي حقيقي في الأداء أو تصميم الـ architecture.
+          </p>
+        </div>
+        <div class="about-facts mono">
+          <div class="fact"><span class="k">experience</span><span class="v">5+ years</span></div>
+          <div class="fact"><span class="k">location</span><span class="v">Cairo, Egypt</span></div>
+          <div class="fact"><span class="k">focus</span><span class="v">Web Apps · APIs</span></div>
+          <div class="fact"><span class="k">availability</span><span class="v">Open to work</span></div>
+        </div>
+      </div>
+      <div class="line-decl" style="margin-top:36px;"><span class="b">}</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section class="code-section" id="skills">
+    <div class="code-inner reveal">
+      <div class="line-decl"><span class="k">const</span> <span class="f">skills</span> <span class="b">=</span></div>
+      <h2>الأدوات اللي بشتغل بيها</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-top"><span class="skill-name">JavaScript / TypeScript</span><span class="skill-pct mono">95%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="95"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-top"><span class="skill-name">React / Next.js</span><span class="skill-pct mono">92%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="92"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-top"><span class="skill-name">Node.js / Express</span><span class="skill-pct mono">88%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="88"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-top"><span class="skill-name">PostgreSQL / MongoDB</span><span class="skill-pct mono">85%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="85"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-top"><span class="skill-name">Docker / CI-CD</span><span class="skill-pct mono">78%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="78"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-top"><span class="skill-name">UI / UX Fundamentals</span><span class="skill-pct mono">80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="80"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROJECTS ===================== -->
+  <section class="code-section" id="projects">
+    <div class="code-inner reveal">
+      <div class="line-decl"><span class="k">export</span> <span class="k">default</span> <span class="f">projects</span><span class="b">.map(p =&gt;)</span></div>
+      <h2>مشاريع مختارة</h2>
+      <div class="project-grid">
+
+        <div class="project-card">
+          <div class="project-thumb thumb-1"></div>
+          <div class="project-body">
+            <h3>لوحة تحكم تجارة إلكترونية</h3>
+            <p>لوحة تحكم لإدارة الطلبات والمخزون في الوقت الفعلي، مع تقارير مبيعات تفاعلية.</p>
+            <div class="tag-row">
+              <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span>
+            </div>
+            <div class="project-links">
+              <a href="#">المعاينة →</a>
+              <a href="#">GitHub →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-thumb thumb-2"></div>
+          <div class="project-body">
+            <h3>نظام حجوزات SaaS</h3>
+            <p>منصة حجز مواعيد للأعمال الصغيرة، مع نظام دفع وإشعارات تلقائية.</p>
+            <div class="tag-row">
+              <span class="tag">Next.js</span><span class="tag">Stripe</span><span class="tag">MongoDB</span>
+            </div>
+            <div class="project-links">
+              <a href="#">المعاينة →</a>
+              <a href="#">GitHub →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-thumb thumb-3"></div>
+          <div class="project-body">
+            <h3>API لخدمة توصيل</h3>
+            <p>REST API قابل للتوسع، بيدير الطلبات والتتبع اللحظي للسائقين.</p>
+            <div class="tag-row">
+              <span class="tag">Express</span><span class="tag">Redis</span><span class="tag">Docker</span>
+            </div>
+            <div class="project-links">
+              <a href="#">التوثيق →</a>
+              <a href="#">GitHub →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-thumb thumb-4"></div>
+          <div class="project-body">
+            <h3>موقع تعليمي تفاعلي</h3>
+            <p>منصة كورسات أونلاين مع اختبارات تفاعلية وتتبع تقدم الطالب.</p>
+            <div class="tag-row">
+              <span class="tag">React</span><span class="tag">Firebase</span><span class="tag">Tailwind</span>
+            </div>
+            <div class="project-links">
+              <a href="#">المعاينة →</a>
+              <a href="#">GitHub →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXPERIENCE (commit log) ===================== -->
+  <section class="code-section" id="log">
+    <div class="code-inner reveal">
+      <div class="line-decl"><span class="b">git log --oneline --all</span></div>
+      <h2>مسار الخبرة</h2>
+      <div class="commit-log">
+        <div class="commit">
+          <span class="commit-hash mono">#a3f21e</span>
+          <div class="commit-msg">
+            <strong>Senior Full-Stack Developer — شركة تِك محلية</strong>
+            <span>قيادة فريق من 4 مطورين، وإعادة بناء الـ backend لتحمل ضعف عدد المستخدمين.</span>
+          </div>
+          <span class="commit-date mono">2024 — الآن</span>
+        </div>
+        <div class="commit">
+          <span class="commit-hash mono">#7c19d4</span>
+          <div class="commit-msg">
+            <strong>Full-Stack Developer — استوديو رقمي</strong>
+            <span>بناء أكتر من 10 مشاريع لعملاء متنوعين، من لوحات تحكم لمنصات SaaS.</span>
+          </div>
+          <span class="commit-date mono">2022 — 2024</span>
+        </div>
+        <div class="commit">
+          <span class="commit-hash mono">#f08b2a</span>
+          <div class="commit-msg">
+            <strong>Frontend Developer — شركة ناشئة</strong>
+            <span>بناء واجهات المستخدم من الصفر باستخدام React، وتحسين سرعة التحميل بنسبة 40%.</span>
+          </div>
+          <span class="commit-date mono">2020 — 2022</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REVIEWS ===================== -->
+  <section class="code-section" id="reviews">
+    <div class="code-inner reveal">
+      <div class="line-decl"><span class="k">// </span><span class="b">code reviews from teammates</span></div>
+      <h2>آراء زملاء العمل</h2>
+      <div class="review-grid">
+        <div class="review">
+          <div class="review-head">
+            <div class="avatar"></div>
+            <div class="reviewer">سارة كمال<small>Product Manager</small></div>
+          </div>
+          <p>بيسلم في الميعاد، وبيشرح أي قرار تقني بطريقة مفهومة حتى لغير المطورين.</p>
+          <div class="stamp mono">✓ approved</div>
+        </div>
+        <div class="review">
+          <div class="review-head">
+            <div class="avatar"></div>
+            <div class="reviewer">أحمد سيد<small>Backend Lead</small></div>
+          </div>
+          <p>الكود بتاعه نضيف ومنظم، وبيهتم بالتفاصيل اللي كتير بيتجاهلوها.</p>
+          <div class="stamp mono">✓ approved</div>
+        </div>
+        <div class="review">
+          <div class="review-head">
+            <div class="avatar"></div>
+            <div class="reviewer">مريم عادل<small>UI/UX Designer</small></div>
+          </div>
+          <p>بيحول التصميم لواجهة حقيقية من غير ما يضيع أي تفصيلة صغيرة.</p>
+          <div class="stamp mono">✓ approved</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="code-section" id="contact" style="border-bottom:none;">
+    <div class="code-inner reveal">
+      <div class="line-decl"><span class="k">async function</span> <span class="f">contact</span><span class="b">() {</span></div>
+      <h2>عايز تتواصل معايا؟</h2>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p>متاح لمشاريع فريلانس أو فرص عمل كاملة. ابعتلي رسالة أو تواصل معايا مباشرة من القنوات دي.</p>
+          <div class="contact-links mono">
+            <a href="mailto:hello@example.com"><span>Email</span><span class="mono">hello@example.com</span></a>
+            <a href="#"><span>LinkedIn</span><span class="mono">/in/mohamed-ahmed</span></a>
+            <a href="#"><span>GitHub</span><span class="mono">/mohamed-ahmed</span></a>
+            <a href="#"><span>WhatsApp</span><span class="mono">+20 1xx xxx xxxx</span></a>
+          </div>
+        </div>
+        <form onsubmit="event.preventDefault(); this.querySelector('.submit-note').textContent='تم الإرسال (نموذج تجريبي) ✓';">
+          <label class="mono">الاسم</label>
+          <input type="text" placeholder="اسمك" required>
+          <label class="mono">البريد الإلكتروني</label>
+          <input type="email" placeholder="you@example.com" required>
+          <label class="mono">الرسالة</label>
+          <textarea placeholder="اكتب رسالتك هنا..." required></textarea>
+          <div class="submit-row">
+            <button class="submit" type="submit">إرسال الرسالة</button>
+            <span class="submit-note mono">POST /api/contact</span>
+          </div>
+        </form>
+      </div>
+      <div class="line-decl" style="margin-top:36px;"><span class="b">}</span></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="mono">© 2026 Mohamed Ahmed. Built with HTML, CSS &amp; JS.</span>
+  <span class="mono">status: <span style="color:var(--fn);">online</span></span>
+</footer>
+
+<script>
+  // active tab highlighting on scroll
+  const tabs = document.querySelectorAll('.tab');
+  const sections = [...tabs].map(t => document.querySelector(t.getAttribute('href')));
+
+  function updateTabs(){
+    let idx = 0;
+    sections.forEach((s,i)=>{
+      if(s && s.getBoundingClientRect().top <= 120) idx = i;
+    });
+    tabs.forEach(t=>t.classList.remove('active'));
+    tabs[idx].classList.add('active');
+  }
+  document.addEventListener('scroll', updateTabs);
+  updateTabs();
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
+
+  // skill bars fill on view
+  const bars = document.querySelectorAll('.skill-fill');
+  const io2 = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.style.width = e.target.dataset.w + '%';
+      }
+    });
+  }, {threshold:0.4});
+  bars.forEach(b=>io2.observe(b));
+</script>
+
+</body>
+</html>
